@@ -49,7 +49,7 @@ Application对象负责全局配置，包括将请求映射到处理程序的映
 """
 @time:2021/10/2723:31
 @desc:
-    tornado web Application 下的URL路由
+    Tornado_study web Application 下的URL路由
 """
 from tornado.web import Application
 import tornado
@@ -87,4 +87,60 @@ app = Application(
 
 
 
---参考：https://www.osgeo.cn/tornado/guide/structure.html
+--参考：https://www.osgeo.cn/tornado/guide/structure.html 
+
+
+
+## 具体实例
+
+目标：使用tornado接受图片，并将图片交给**指定函数**进行处理并返回结果。
+
+
+
+step1,首先需要重写tornado的 RequestHandler类， 因为，Tornado在设计时，要一些必要的子类重写（覆盖）
+
+```python
+# encoding:utf-8
+"""
+@time:2021/11/122:36
+@desc:
+    重写 ResquestHandle
+"""
+
+import tornado.web
+from tornado.concurrent import run_on_executor
+from concurrent.futures import ThreadPoolExecutor
+
+
+class RewriteResquestHandle(tornado.web.RequestHandler):
+    executor = ThreadPoolExecutor(4)
+
+    def set_default_headers(self) -> None:
+        # 设置响应头
+        self.set_header('content-Type', 'application/json')
+        self.set_header('Access-Control-Allow-Headers', 'x-requested-with, access_token')
+        self.set_header('Access-Control-Allow-Methods', 'POST,GET')
+        self.set_header('Access-Control-Max-Age', '3600')
+
+    def post(self):
+        ret = yield self.work()
+        self.finish(ret)
+
+    @run_on_executor()
+    def work(self):
+        return True
+
+```
+
+---参考： https://www.bilibili.com/video/BV1kA41187TD?from=search&seid=5485147593377296026&spm_id_from=333.337.0.0
+
+step2,定义
+
+
+
+
+
+
+
+
+

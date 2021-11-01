@@ -8,7 +8,7 @@ import tornado.web
 
 
 class MainHandler(tornado.web.RequestHandler):
-    def get(self):
+    def get(self):      # get 请求；post 提交
         self.write('Hellow，world')
 
 

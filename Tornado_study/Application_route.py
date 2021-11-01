@@ -2,7 +2,7 @@
 """
 @time:2021/10/2723:31
 @desc:
-    tornado web Application 下的URL路由
+    Tornado_study web Application 下的URL路由
 """
 from tornado.web import Application
 import tornado
